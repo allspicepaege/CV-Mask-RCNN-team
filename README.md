@@ -41,7 +41,6 @@ streamlit run app.py
 2. Детекция [судов на изображениях аэросъёмки](https://www.kaggle.com/datasets/siddharthkumarsah/ships-in-aerial-images). Используемая модель - YOLO11
 
 3. Семантическая сегментация [аэрокосмических снимков](https://www.kaggle.com/datasets/quadeer15sh/augmented-forest-segmentation). 
-
 Реализовано в двух вариантах: 
     - Unet
     - SAM  
