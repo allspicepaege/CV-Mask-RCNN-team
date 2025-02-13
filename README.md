@@ -13,13 +13,16 @@
 - **Возвращение картинки с детекцией/сегментацией**: можно увидеть картинки с выделенными зонами сегментации/детекции.
 - **User-friendly интерфейс**: интуитивно понятный интерфейс для невовлеченного в процесс пользователя.
 
-## Установка и запуск
-```bash
-git clone https://github.com/xefr762/nn_project.git
-cd nn_project/
-pip install -r requirements.txt
-streamlit run app.py
-```
+## Краткое описание каждой модели
+
+1. Детекция [лиц](https://www.kaggle.com/datasets/fareselmenshawii/face-detection-dataset) с помощью YOLO11, с последующей маскировкой детектированной области пример работы - [тык](https://github.com/Elbrus-DataScience/cv_mask-rcnn/blob/master/SCR-20240807-kgpq.png) 
+
+2. Детекция [судов на изображениях аэросъёмки](https://www.kaggle.com/datasets/siddharthkumarsah/ships-in-aerial-images). Используемая модель - YOLO11
+
+3. Семантическая сегментация [аэрокосмических снимков](https://www.kaggle.com/datasets/quadeer15sh/augmented-forest-segmentation). 
+Реализовано в двух вариантах: 
+    - Unet
+    - SAM  
 
 ## Структура проекта
 
@@ -34,13 +37,10 @@ streamlit run app.py
 - **.gitignrore** - игнорируемые для загрузки файлы
 
 
-## Краткое описание функционала каждой модели
-
-1. Детекция [лиц](https://www.kaggle.com/datasets/fareselmenshawii/face-detection-dataset) с помощью YOLO11, с последующей маскировкой детектированной области пример работы - [тык](https://github.com/Elbrus-DataScience/cv_mask-rcnn/blob/master/SCR-20240807-kgpq.png) 
-
-2. Детекция [судов на изображениях аэросъёмки](https://www.kaggle.com/datasets/siddharthkumarsah/ships-in-aerial-images). Используемая модель - YOLO11
-
-3. Семантическая сегментация [аэрокосмических снимков](https://www.kaggle.com/datasets/quadeer15sh/augmented-forest-segmentation). 
-Реализовано в двух вариантах: 
-    - Unet
-    - SAM  
+## Установка и запуск
+```bash
+git clone https://github.com/xefr762/nn_project.git
+cd nn_project/
+pip install -r requirements.txt
+streamlit run app.py
+```
