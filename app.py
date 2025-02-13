@@ -23,7 +23,7 @@ st.markdown(
 
 left_co, cent_co, last_co = st.columns(3)
 with cent_co:
-    st.image('images/team.jpg', width=300)
+    st.image('/home/marena/Elbrus_phase_2/CV-Mask-RCNN-team/images/team.jpg', width=300)
 st.write('')
 
 st.markdown("""

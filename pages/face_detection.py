@@ -4,7 +4,7 @@ import time
 import torch
 import requests
 
-#from's
+#from'sc
 from io import BytesIO
 from PIL import Image
 from ultralytics import YOLO
@@ -15,74 +15,64 @@ st.markdown(
 )
 st.write('**Пользователь загружает картинку (или несколько) в модель. Модель определяет лицо на картинке и маскирует его.**')
 
-#upload form
+# Форма загрузки изображения
 uploaded_files = st.file_uploader('Загрузите изображение', type=['png', 'jpg', 'jpeg'], accept_multiple_files=True)
 image_url = st.text_input('Вставьте прямую ссылку на изображение')
 
+# Обработка загруженных изображений
+images = []
+
 if uploaded_files:
-    image = []
-    for uploaded_file in uploaded_files:
-        img = Image.open(uploaded_file)
-        image.append(img)
+    images = [Image.open(file) for file in uploaded_files]
+
 elif image_url:
     try:
         response = requests.get(image_url)
-        image = Image.open(BytesIO(response.content))
+        img = Image.open(BytesIO(response.content))
+        images.append(img)
     except Exception as e:
-        st.error(f'Не удалось загрузить изображение по ссылке. Ошибка {e}')
-else:
-    st.write('Выберите способ загрузки изображения!')
+        st.error(f'Не удалось загрузить изображение по ссылке. Ошибка: {e}')
+
+if not images:
+    st.warning('Выберите способ загрузки изображения!')
+    st.stop()
 
 ######################
 ### MODEL
 ######################
 
-@st.cache_resourse()
-def load_model(): # Загружаем наши веса в модель
-    model = YOLO('models/model_1/test.pt')
-    return model
+@st.cache_resource()
+def load_model():
+    return YOLO('/home/marena/Elbrus_phase_2/CV-Mask-RCNN-team/models/model_2/best.pt')
 
 model = load_model()
 
-def predict(img):
-    pred = model(img)
-    return pred
+def predict_image(img):
+    """Функция для предсказания и наложения маски."""
+    result = model.predict(img)  # Получаем результат предсказания
+    result_img = result[-1].plot()  # Генерируем изображение с маской
+    return Image.fromarray(result_img)  # Конвертируем в PIL Image
 
 ######################
 ### PREDICTION
 ######################
 
-if image:
-    start_time = time.time()
+start_time = time.time()
 
-    if isinstance(image, list):
-        for img in image:
-            st.image(img, caption='Ваше изображение')
-            prediction = predict(img)
-            st.write('Ваше предсказание')
-            st.markdown(f"""
-            <h2 style='text-align: center; font-size: 30px, font-weight: bold, padding: 10px; bolder-radius: 10px;'> 
-            {prediction}
-            </h2>
-            """, unsafe_allow_html=True)
-    else:
-        st.image(img, caption='Ваше изображение')
-        prediction = predict(img)
-        st.write('Ваше предсказание')
-        st.markdown(f"""
-        <h2 style='text-align: center; font-size: 30px, font-weight: bold, padding: 10px; bolder-radius: 10px;'> 
-        {prediction}
-        </h2>
-        """, unsafe_allow_html=True)
-    
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    st.write('Время выполнения предсказания в секундах:')
-    st.markdown(f"""
-    <h3 style='text-align: center; font-size: 30px; font-weight: bold; padding: 5px; bolder-radius:5px;'>
-    {elapsed_time:.2f}
-    </h3>
-    """, unsafe_allow_html=True)
+for img in images:
+    st.image(img, caption='Ваше изображение', use_container_width=True)
 
-else:
-    st.stop()
+    pred_img = predict_image(img)
+
+    st.write('Ваше предсказание:')
+    st.image(pred_img, caption='Результат', use_container_width=True)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+
+st.write('⏳ Время выполнения предсказания (сек):')
+st.markdown(f"""
+<h3 style='text-align: center; font-size: 30px; font-weight: bold; padding: 5px; border-radius:5px;'>
+{elapsed_time:.2f}
+</h3>
+""", unsafe_allow_html=True)
