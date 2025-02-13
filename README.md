@@ -32,3 +32,15 @@ streamlit run app.py
 - **app.py** - основной файл для запуска приложения Streamlit
 - **README.md** - файл описания проекта
 - **.gitignrore** - игнорируемые для загрузки файлы
+
+
+## Краткое описание функционала каждой модели
+
+1. Детекция [лиц](https://www.kaggle.com/datasets/fareselmenshawii/face-detection-dataset) с помощью YOLO11, с последующей маскировкой детектированной области пример работы - [тык](https://github.com/Elbrus-DataScience/cv_mask-rcnn/blob/master/SCR-20240807-kgpq.png) 
+
+2. Детекция [судов_на_изображениях_аэросъёмки](https://www.kaggle.com/datasets/siddharthkumarsah/ships-in-aerial-images). Используемая модель - YOLO11
+
+3. Семантическая сегментация [аэрокосмических_снимков](https://www.kaggle.com/datasets/quadeer15sh/augmented-forest-segmentation). 
+Реализовано в двух вариантах: 
+    - Unet
+    - SAM  
