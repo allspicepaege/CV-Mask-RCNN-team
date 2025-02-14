@@ -39,7 +39,7 @@
 
 ## Установка и запуск
 ```bash
-git clone https://github.com/xefr762/nn_project.git
+git clone https://github.com/(dopishu potom)
 cd nn_project/
 pip install -r requirements.txt
 streamlit run app.py
