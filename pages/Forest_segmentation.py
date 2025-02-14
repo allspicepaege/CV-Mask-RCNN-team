@@ -47,7 +47,7 @@ if not images:
 @st.cache_resource()
 def load_model():    
     model = get_model()
-    model.load_state_dict(torch.load('./models/model_3/best.pt'))
+    model.load_state_dict(torch.load('/home/marena/Elbrus_phase_2/CV-Mask-RCNN-team/models/model_3/best.pt'))
     return model
 
 model = load_model()

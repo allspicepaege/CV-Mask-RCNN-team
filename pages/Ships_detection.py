@@ -45,7 +45,7 @@ if not images:
 
 @st.cache_resource()
 def load_model():
-    return YOLO('./models/model_2/best.pt')
+    return YOLO('/home/marena/Elbrus_phase_2/CV-Mask-RCNN-team/models/model_2/best.pt')
 
 model = load_model()
 
