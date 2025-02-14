@@ -1,7 +1,5 @@
 import streamlit as st
 
-st.title('Добро пожаловать на главную страницу проекта по Computer Vision')
-
 st.markdown(
     """
     <style>
