@@ -38,8 +38,10 @@
 
 
 ## Установка и запуск
+Сделать fork репозитория __https://github.com/allspicepaege/CV-Mask-RCNN-team__
+
 ```bash
-git clone https://github.com/(dopishu potom)
+git clone git@github.com:<your nickname>/CV-Mask-RCNN-team.git
 cd nn_project/
 pip install -r requirements.txt
 streamlit run app.py
