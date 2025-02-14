@@ -4,6 +4,8 @@ import time
 import torch
 import requests
 import segmentation_models_pytorch as smp
+import numpy as np
+import cv2
 
 #from's
 from io import BytesIO
@@ -12,6 +14,11 @@ from ultralytics import YOLO
 
 from models.model_3.model_unet import prediction
 from models.model_3.model_unet import get_model
+
+st.set_page_config(
+    page_title="Сегментация леса",
+    page_icon="🌲",
+)
 
 st.markdown(
     '<h1 style="text-align: center;">Модель, сегментирующая лес на аэроснимках</h1>',
@@ -48,13 +55,30 @@ if not images:
 def load_model():    
     model = get_model()
     model.load_state_dict(torch.load('/home/marena/Elbrus_phase_2/CV-Mask-RCNN-team/models/model_3/best.pt'))
+    model.eval()
     return model
 
 model = load_model()
 
-def predict_image(image):
-    result = prediction(model, image)
-    return result
+######################
+### MASK FUNCTION
+######################
+
+def overlay_mask(image, mask, color=(0, 255, 0), alpha=0.5):
+
+    image = np.array(image.convert("RGB"))  # Преобразуем в RGB
+    
+    # Меняем размер маски под размер изображения
+    mask_resized = cv2.resize(mask.astype(np.uint8), (image.shape[1], image.shape[0]), interpolation=cv2.INTER_NEAREST)
+
+    # Создаём цветную маску
+    color_mask = np.zeros_like(image)
+    color_mask[mask_resized == 1] = color  
+
+    # Накладываем с прозрачностью
+    overlayed = cv2.addWeighted(image, 1, color_mask, alpha, 0)
+
+    return Image.fromarray(overlayed)
 
 ######################
 ### PREDICTION
@@ -63,12 +87,15 @@ def predict_image(image):
 start_time = time.time()
 
 for img in images:
-    st.image(img, caption='Ваше изображение', use_container_width=True)
+    st.image(img, caption='Исходное изображение', use_container_width=True)
 
-    pred_img = predict_image(img)
+    # Получаем маску предсказания
+    mask = prediction(model, img)
 
-    st.write('Ваше предсказание:')
-    st.image(pred_img, caption='Результат', use_container_width=True)
+    # Накладываем маску
+    masked_image = overlay_mask(img, mask)
+
+    st.image(masked_image, caption='Сегментированное изображение', use_container_width=True)
 
 end_time = time.time()
 elapsed_time = end_time - start_time
