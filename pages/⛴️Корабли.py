@@ -6,17 +6,16 @@ import requests
 import cv2
 import numpy as np
 
-#from's
+#from'sc
 from io import BytesIO
 from PIL import Image
 from ultralytics import YOLO
 
-
 st.markdown(
-    '<h1 style="text-align: center;">Модель, которая детектирует и маскирует лица на ваших картинках</h1>',
+    '<h1 style="text-align: center;">Модель, которая детектирует морские суда на аэроснимках</h1>',
     unsafe_allow_html=True
 )
-st.write('**Пользователь загружает картинку (или несколько) в модель. Модель определяет лицо на картинке и маскирует его.**')
+st.write('**Пользователь загружает картинку (или несколько) в модель. Модель определяет корабль на картинке.**')
 
 # Форма загрузки изображения
 uploaded_files = st.file_uploader('Загрузите изображение', type=['png', 'jpg', 'jpeg'], accept_multiple_files=True)
@@ -46,7 +45,7 @@ if not images:
 
 @st.cache_resource()
 def load_model():
-    return YOLO('/home/marena/Elbrus_phase_2/CV-Mask-RCNN-team/models/model_1/best.pt')
+    return YOLO('./models/model_2/best.pt')
 
 model = load_model()
 
