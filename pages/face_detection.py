@@ -3,11 +3,14 @@ import streamlit as st
 import time
 import torch
 import requests
+import cv2
+import numpy as np
 
-#from'sc
+#from's
 from io import BytesIO
 from PIL import Image
 from ultralytics import YOLO
+
 
 st.markdown(
     '<h1 style="text-align: center;">Модель, которая детектирует и маскирует лица на ваших картинках</h1>',
@@ -43,15 +46,18 @@ if not images:
 
 @st.cache_resource()
 def load_model():
-    return YOLO('/home/marena/Elbrus_phase_2/CV-Mask-RCNN-team/models/model_2/best.pt')
+    return YOLO('/home/marena/Elbrus_phase_2/CV-Mask-RCNN-team/models/model_1/best.pt')
 
 model = load_model()
 
 def predict_image(img):
     """Функция для предсказания и наложения маски."""
-    result = model.predict(img)  # Получаем результат предсказания
-    result_img = result[-1].plot()  # Генерируем изображение с маской
-    return Image.fromarray(result_img)  # Конвертируем в PIL Image
+    img_cv2 = np.array(img)
+    img_cv2 = cv2.cvtColor(img_cv2, cv2.COLOR_RGB2BGR)
+    results = model(img_cv2)
+    result_img = results[0].plot()
+    result_pil = Image.fromarray(cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB))
+    return result_pil
 
 ######################
 ### PREDICTION
